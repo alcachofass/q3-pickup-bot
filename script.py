@@ -1,6 +1,8 @@
 import socket
 import discord
 import os
+import json
+import random
 from discord.ext import commands
 from dotenv import load_dotenv
 from pyq3serverlist import Server
@@ -17,6 +19,8 @@ SERVER05     = os.getenv('GAME_SERVER05')
 
 PLAYER_COUNT_DUEL = os.getenv('THRESHOLD_DUEL')
 PLAYER_COUNT_TEAM = os.getenv('THRESHOLD_TEAM')
+
+QUOTES     = os.getenv('QUOTES_FILE')
 
 SERVERS = SERVER01,SERVER02,SERVER03,SERVER04,SERVER05
 
@@ -93,6 +97,8 @@ async def on_message(message):
             await channel.send("Hey!")
             for x in QUEUE:
                 await channel.send(x)
+        elif message.content.lower().startswith("!turd"):
+            await channel.send((getQuote()))
 
 # Function return is JSON data
 def query_quake3_server(server):
@@ -102,5 +108,12 @@ def query_quake3_server(server):
         return(info)
     except (PyQ3SLError, PyQ3SLTimeoutError) as e:
         print(e)
+
+def getQuote():
+    with open(str(QUOTES), 'r', encoding='utf-8') as f:   
+        data = json.load(f)
+    i = random.randint(0,len(data['quotes'])-1)
+    f.close()
+    return(data['quotes'][i])
 
 bot.run(TOKEN)

@@ -17,3 +17,4 @@ A basic Discord bot for Quake 3 rounds. Port 27960 is assumed.
 - GAME_SERVER05  - FQDN of game server
 - THRESHOLD_DUEL - Minimum number of players needed for duel notification
 - THRESHOLD_TEAM - Minimum number of players needed for team notification
+- QUOTES_FILE    - JSON formatted file with quotes
