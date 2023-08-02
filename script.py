@@ -76,14 +76,15 @@ async def on_message(message):
                 for x in SERVERS:
                     if(len(x) != 0):
                         ip = socket.gethostbyname(x)
-                        await channel.send("*" + x + ": " + ip + "*")
+                        await channel.send("__" + x + " | " + ip + "__")
+                        await channel.send("> **Player**" + " | " + "**Frags**")
                         serverStatus = query_quake3_server(x)                  
                         for i in serverStatus["players"]:
                             name  = str(i['name'])
                             frags = str(i['frags'])
                             ping  = str(i['ping'])
                             if ping != '0':
-                                await channel.send("> *player* -> **" + name + "** *frags*-> **" + frags + "**")
+                                await channel.send("> " + name + " | " + "" + frags)
         elif message.content.lower().startswith("!clearqueue"):
             while len(QUEUE)>0:
                 QUEUE.pop(0)
