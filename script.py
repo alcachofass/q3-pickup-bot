@@ -47,7 +47,7 @@ async def on_message(message):
 
         # Command logic
         if message.content.lower().startswith("!help"):
-             await channel.send("Verbs: " + "add, clearqueue, help, hello, list, ping, remove, servers. Use ! as a prefix. ")
+             await channel.send("Verbs: " + "add, clearqueue, help, hello, list, ping, remove, servers, turd. Use ! as a prefix. ")
         elif message.content.lower().startswith("!hello"):
              await channel.send("Fuck you " + message.author.mention + ".")
         elif message.content.lower().startswith("!list"):
