@@ -43,7 +43,7 @@ async def on_message(message):
 
         # Command logic
         if message.content.lower().startswith("!help"):
-             await channel.send("Verbs: " + "help, hello, list, add, remove, servers, clearqueue. Use ! as a prefix. ")
+             await channel.send("Verbs: " + "add, clearqueue, help, hello, list, ping, remove, servers. Use ! as a prefix. ")
         elif message.content.lower().startswith("!hello"):
              await channel.send("Fuck you " + message.author.mention + ".")
         elif message.content.lower().startswith("!list"):
@@ -87,7 +87,11 @@ async def on_message(message):
         elif message.content.lower().startswith("!clearqueue"):
             while len(QUEUE)>0:
                 QUEUE.pop(0)
-            await channel.send("Queue is empty.") 
+            await channel.send("Queue is empty.")
+        elif message.content.lower().startswith("!ping"):
+            await channel.send("Hey!")
+            for x in QUEUE:
+                await channel.send(x)
 
 # Function return is JSON data
 def query_quake3_server(server):
