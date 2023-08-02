@@ -47,56 +47,65 @@ async def on_message(message):
 
         # Command logic
         if message.content.lower().startswith("!help"):
-             await channel.send("Verbs: " + "add, clearqueue, help, hello, list, ping, remove, servers, turd. Use ! as a prefix. ")
+             await channel.send("Verbs: \n" + "add, clearqueue, help, hello, list, ping, remove, servers, turd.\n" + "Use ! as a prefix.")
         elif message.content.lower().startswith("!hello"):
-             await channel.send("Fuck you " + message.author.mention + ".")
+             await channel.send("Hey there, " + message.author.name + ".")
         elif message.content.lower().startswith("!list"):
-            s = ' '.join(str(x) for x in QUEUE)
-            await channel.send("Currently queued players: " + s) 
+            s = '\n'.join(str(x.name) for x in QUEUE)
+            await channel.send("Currently queued players: \n" + s) 
         elif message.content.lower().startswith("!add"):
-            s = ' '.join(str(x) for x in QUEUE)
-            if message.author.mention not in s:
-                await channel.send("Adding " + message.author.mention + " to queue.") 
-                QUEUE.append(message.author.mention)
+            s = ' '.join(str(x.name) for x in QUEUE)
+            this_message = ""
+            if message.author.name not in s:
+                this_message = this_message + "Adding " + message.author.name + " to queue.\n"
+                QUEUE.append(message.author)
                 if len(QUEUE) == int(PLAYER_COUNT_DUEL):
-                     await channel.send("Enough players for duels, go play!")
+                     this_message = this_message + "Enough players for duels, go play!\n"
                      for x in QUEUE:
-                        await channel.send(x)
+                        this_message = this_message +  x.mention + "\n"
                 elif len(QUEUE) == int(PLAYER_COUNT_TEAM):
-                    await channel.send("Enough players for team modes, go play!")
+                    this_message = this_message + "Enough players for duels, go play!\n"
                     for x in QUEUE:
-                        await channel.send(x)
-            if message.author.mention in s:
+                        this_message + this_message + x.mention + "\n"
+            await channel.send(this_message)
+            this_message = ""
+            if message.author.name in s:
                 await channel.send("You are already in queue...")           
         elif message.content.lower().startswith("!remove"):
-            s = ' '.join(str(x) for x in QUEUE)
-            if message.author.mention not in s:
+            s = ' '.join(str(x.name) for x in QUEUE)
+            if message.author.name not in s:
                 await channel.send("You weren't queued...")
-            if message.author.mention in s:
-                await channel.send("Removing " + message.author.mention + " from queue.")
-                QUEUE.remove(message.author.mention) 
+            if message.author.name in s:
+                await channel.send("Removing " + message.author.name + " from queue.")
+                QUEUE.remove(message.author) 
         elif message.content.lower().startswith("!servers"):
-                await channel.send("**Servers**")
+                this_message = ""
+                this_message = this_message + "**Servers**\n"
                 for x in SERVERS:
                     if(len(x) != 0):
                         ip = socket.gethostbyname(x)
-                        await channel.send("__" + x + " | " + ip + "__")
-                        await channel.send("> **Player**" + " | " + "**Frags**")
+                        this_message = this_message + "__" + x + " | " + ip + "__" + "\n"
+                        this_message = this_message + "> **Player**" + " | " + "**Frags**" + "\n"
                         serverStatus = query_quake3_server(x)                  
                         for i in serverStatus["players"]:
                             name  = str(i['name'])
                             frags = str(i['frags'])
                             ping  = str(i['ping'])
                             if ping != '0':
-                                await channel.send("> " + name + " | " + "" + frags)
+                                this_message = this_message + "> " + name + " | " + "" + frags + "\n"
+                await channel.send(this_message)
+                this_message = ""
         elif message.content.lower().startswith("!clearqueue"):
             while len(QUEUE)>0:
                 QUEUE.pop(0)
             await channel.send("Queue is empty.")
         elif message.content.lower().startswith("!ping"):
-            await channel.send("Hey!")
+            this_message = ""
+            this_message = this_message + "Hey!"
             for x in QUEUE:
-                await channel.send(x)
+                this_message = this_message + " " + x.mention
+            await channel.send(this_message)
+            this_message = ""
         elif message.content.lower().startswith("!turd"):
             await channel.send((getQuote()))
 
