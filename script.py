@@ -42,14 +42,14 @@ async def on_message(message):
             return
 
         # Command logic
-        if "!help" == message.content.lower():
+        if message.content.lower().startswith("!help"):
              await channel.send("Verbs: " + "help, hello, list, add, remove, servers, clearqueue. Use ! as a prefix. ")
-        elif "!hello" == message.content.lower():
+        elif message.content.lower().startswith("!hello"):
              await channel.send("Fuck you " + message.author.mention + ".")
-        elif "!list" == message.content.lower():
+        elif message.content.lower().startswith("!list"):
             s = ' '.join(str(x) for x in QUEUE)
             await channel.send("Currently queued players: " + s) 
-        elif "!add" in message.content.lower():
+        elif message.content.lower().startswith("!add"):
             s = ' '.join(str(x) for x in QUEUE)
             if message.author.mention not in s:
                 await channel.send("Adding " + message.author.mention + " to queue.") 
@@ -64,14 +64,14 @@ async def on_message(message):
                         await channel.send(x)
             if message.author.mention in s:
                 await channel.send("You are already in queue...")           
-        elif "!remove" in message.content.lower():
+        elif message.content.lower().startswith("!remove"):
             s = ' '.join(str(x) for x in QUEUE)
             if message.author.mention not in s:
                 await channel.send("You weren't queued...")
             if message.author.mention in s:
                 await channel.send("Removing " + message.author.mention + " from queue.")
                 QUEUE.remove(message.author.mention) 
-        elif "!servers" in message.content.lower():
+        elif message.content.lower().startswith("!servers"):
                 await channel.send("**Servers**")
                 for x in SERVERS:
                     if(len(x) != 0):
@@ -84,7 +84,7 @@ async def on_message(message):
                             ping  = str(i['ping'])
                             if ping != '0':
                                 await channel.send("> *player* -> **" + name + "** *frags*-> **" + frags + "**")
-        elif "!clearqueue" in message.content.lower():
+        elif message.content.lower().startswith("!clearqueue"):
             while len(QUEUE)>0:
                 QUEUE.pop(0)
             await channel.send("Queue is empty.") 
