@@ -8,6 +8,8 @@ A basic Discord bot for Quake 3 rounds. Port 27960 is assumed.
     
     py -3 -m pip install -U pyq3serverlist
 
+    py -3 -m pip install -U cysystemd
+
 ## .env File
 - AUTH_TOKEN     - Your Discord OAuth Token
 - GAME_SERVER01  - FQDN of game server 
@@ -15,6 +17,5 @@ A basic Discord bot for Quake 3 rounds. Port 27960 is assumed.
 - GAME_SERVER03  - FQDN of game server
 - GAME_SERVER04  - FQDN of game server
 - GAME_SERVER05  - FQDN of game server
-- THRESHOLD_DUEL - Minimum number of players needed for duel notification
-- THRESHOLD_TEAM - Minimum number of players needed for team notification
+- THRESHOLD      - Minimum number of players needed to notify & pop the queue
 - QUOTES_FILE    - JSON formatted file with quotes
