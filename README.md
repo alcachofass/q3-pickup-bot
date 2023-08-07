@@ -1,5 +1,5 @@
 # q3-pickup-bot
-A basic Discord bot for Quake 3 rounds. Port 27960 is assumed. 
+A basic Discord bot for Quake 3 rounds. Port 27960 is assumed, and the queue clears every 120 minutes. 
 
 ## Requirements
     pip install -U discord.py

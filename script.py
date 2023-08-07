@@ -4,6 +4,7 @@ import os
 import json
 import random
 from discord.ext import commands
+from discord.ext import tasks
 from dotenv import load_dotenv
 from pyq3serverlist import Server
 from pyq3serverlist.exceptions import PyQ3SLError, PyQ3SLTimeoutError
@@ -36,6 +37,21 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+def clear_queue():
+    logger.info("DEBUG: Clearing queue.")
+    global QUEUE
+    while len(QUEUE)>0:
+        QUEUE.pop(0)
+
+@tasks.loop(minutes=120)
+async def queue_task():
+     clear_queue()
+    
+@bot.event
+async def on_ready():
+     logger.info("DEBUG: Bot started.")
+     queue_task.start()
+
 @bot.event
 async def on_message(message):
     logger.info("DEBUG: Message received in channel.")
@@ -67,10 +83,10 @@ async def on_message(message):
             this_message = this_message + "Adding " + message.author.name + " to queue.\n"
             QUEUE.append(message.author)
             if len(QUEUE) == int(PLAYER_COUNT):
-                    this_message = this_message + "Enough players, go play! Queue cleared....\n"
-                    for x in QUEUE:
+                this_message = this_message + "Enough players, go play! Queue cleared....\n"
+                for x in QUEUE:
                     this_message = this_message +  x.mention + "\n"
-                    clear_queue()
+                clear_queue()
         await channel.send(this_message)
         this_message = ""
         if message.author.name in s:
@@ -111,13 +127,6 @@ async def on_message(message):
         this_message = ""
     elif message.content.lower().startswith("!turd"):
         await channel.send((getQuote()))
-
-def clear_queue():
-    logger.info("DEBUG: Clearing queue.")
-    global QUEUE
-    while len(QUEUE)>0:
-        QUEUE.pop(0)
-
 
 # Function return is JSON data
 def query_quake3_server(server):
