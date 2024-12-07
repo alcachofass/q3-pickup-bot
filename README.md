@@ -8,8 +8,6 @@ A basic Discord bot for Quake 3 rounds. Port 27960 is assumed, and the queue cle
     
     pip install -U pyq3serverlist
 
-    pip install -U cysystemd
-
 ## .env File
 - AUTH_TOKEN     - Your Discord OAuth Token
 - GAME_SERVER01  - FQDN of game server 
