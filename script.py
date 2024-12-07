@@ -8,12 +8,6 @@ from discord.ext import tasks
 from dotenv import load_dotenv
 from pyq3serverlist import Server
 from pyq3serverlist.exceptions import PyQ3SLError, PyQ3SLTimeoutError
-import logging
-from cysystemd import journal
-
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
-logger.addHandler(journal.JournaldLogHandler())
 
 load_dotenv()
 
@@ -38,7 +32,6 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 def clear_queue():
-    logger.info("DEBUG: Clearing queue.")
     global QUEUE
     while len(QUEUE)>0:
         QUEUE.pop(0)
@@ -49,12 +42,10 @@ async def queue_task():
     
 @bot.event
 async def on_ready():
-     logger.info("DEBUG: Bot started.")
      queue_task.start()
 
 @bot.event
 async def on_message(message):
-    logger.info("DEBUG: Message received in channel.")
 
     global QUEUE
     channel = message.channel
@@ -130,16 +121,14 @@ async def on_message(message):
 
 # Function return is JSON data
 def query_quake3_server(server):
-    logger.info("DEBUG: Querying servers.")
     server = Server(server, 27960)
     try:
         info = server.get_status()
         return(info)
     except (PyQ3SLError, PyQ3SLTimeoutError) as e:
-        logger.info(e)
+        print(e)
 
 def getQuote():
-    logger.info("DEBUG: Getting a quote.")
     with open(str(QUOTES), 'r', encoding='utf-8') as f:
         data = json.load(f)
     i = random.randint(0,len(data['quotes'])-1)
